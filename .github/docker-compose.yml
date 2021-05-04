@@ -14,7 +14,7 @@ services:
     
     kafka1:
         container_name: kafka1
-        image: wurstmeister/kafka:${KAFKA_VERSION}
+        image: wurstmeister/kafka:2.13-2.7.0
         depends_on:
             - zookeeper
         environment:

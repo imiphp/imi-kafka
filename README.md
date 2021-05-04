@@ -117,41 +117,99 @@ $producer->sendBatch([
 
 ### 消费者
 
+**消费者类：**
+
 ```php
 <?php
 
-namespace ImiApp\Kafka\QueueTest;
+namespace ImiApp\Kafka\Test;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Queue\Contract\IMessage;
-use Imi\Queue\Driver\IQueueDriver;
-use Imi\Queue\Service\BaseQueueConsumer;
+use Imi\Kafka\Annotation\Consumer;
+use Imi\Kafka\Base\BaseConsumer;
 use Imi\Redis\Redis;
+use longlang\phpkafka\Consumer\ConsumeMessage;
 
 /**
- * @Bean("QueueTestConsumer")
+ * @Bean("TestConsumer")
+ * @Consumer(topic="queue-imi-1", groupId="test-consumer")
  */
-class QueueTestConsumer extends BaseQueueConsumer
+class TestConsumer extends BaseConsumer
 {
     /**
-     * 处理消费.
+     * 消费任务
      *
-     * @param IMessage                       $message
-     * @param \Imi\Queue\Driver\IQueueDriver $queue
-     *
-     * @return void
+     * @return mixed
      */
-    protected function consume(IMessage $message, IQueueDriver $queue)
+    protected function consume(ConsumeMessage $message)
     {
-        // 消息内容
-        $messageValue = $message->getMessage();
-
-        // 表示消费成功
-        $queue->success($message);
+        $messageValue = $message->getValue();
     }
 }
-
 ```
+
+**消费进程：**
+
+```php
+<?php
+
+namespace ImiApp\Process;
+
+use Imi\Aop\Annotation\Inject;
+use Imi\App;
+use Imi\Kafka\Contract\IConsumer;
+use Imi\Process\Annotation\Process;
+use Imi\Process\BaseProcess;
+
+/**
+ * @Process(name="TestProcess")
+ */
+class TestProcess extends BaseProcess
+{
+    /**
+     * @Inject("TestConsumer")
+     *
+     * @var \ImiApp\Kafka\Test\TestConsumer
+     */
+    protected $testConsumer;
+
+    public function run(\Swoole\Process $process)
+    {
+        $this->runConsumer($this->testConsumer);
+        \Swoole\Coroutine::yield();
+    }
+
+    private function runConsumer(IConsumer $consumer): void
+    {
+        go(function () use ($consumer) {
+            try
+            {
+                $consumer->run();
+            }
+            catch (\Throwable $th)
+            {
+                /** @var \Imi\Log\ErrorLog $errorLog */
+                $errorLog = App::getBean('ErrorLog');
+                $errorLog->onException($th);
+                sleep(3);
+                $this->runConsumer($consumer);
+            }
+        });
+    }
+}
+```
+
+### 注解说明
+
+### @Consumer
+
+消费者注解
+
+| 属性名称 | 说明 |
+|-|-
+| topic | 主题名称，支持字符串或字符串数组 |
+| groupId | 分组ID |
+| poolName | 连接池名称，不传则使用配置中默认的 |
 
 ### 队列组件支持
 
