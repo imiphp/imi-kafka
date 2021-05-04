@@ -31,8 +31,14 @@ jobs:
       - name: prepare
         run: |
           ./.github/prepare-test.sh swoole
+          docker exec kafka1 /opt/kafka/bin/kafka-topics.sh --zookeeper zookeeper:2181 --create --partitions 3 --replication-factor 1 --topic queue-imi-1
+          docker exec kafka1 /opt/kafka/bin/kafka-topics.sh --zookeeper zookeeper:2181 --create --partitions 3 --replication-factor 1 --topic QueueTest1
       - name: test
         run: docker exec swoole composer test
       - name: print logs
         if: failure()
-        run: docker exec swoole php .github/print-logs.php
+        run: |
+          docker exec swoole php .github/print-logs.php
+          ls example/.runtime
+          ls example/.runtime/logs
+          cat example/.runtime/logs/2021-05-04.log
