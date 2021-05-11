@@ -12,6 +12,7 @@ use Imi\Kafka\Pool\KafkaPool;
 use Imi\Util\Imi;
 use longlang\phpkafka\Consumer\ConsumeMessage;
 use longlang\phpkafka\Consumer\Consumer;
+
 use function Yurun\Swoole\Coroutine\goWait;
 
 /**
@@ -36,7 +37,8 @@ abstract class BaseConsumer implements IConsumer
     protected function initConfig(): void
     {
         $class = BeanFactory::getObjectClass($this);
-        $this->consumerAnnotation = AnnotationManager::getClassAnnotations($class, ConsumerAnnotation::class)[0] ?? null;
+        // @phpstan-ignore-next-line
+        $this->consumerAnnotation = AnnotationManager::getClassAnnotations($class, ConsumerAnnotation::class, true, true);
     }
 
     /**

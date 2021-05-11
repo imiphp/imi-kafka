@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-use function Imi\env;
 use Imi\Util\Imi;
+
+use function Imi\env;
 
 \defined('KAFKA_BOOTSTRAP_SERVERS') || \define('KAFKA_BOOTSTRAP_SERVERS', env('KAFKA_BOOTSTRAP_SERVERS', '127.0.0.1:9092'));
 
 return [
     // 项目根命名空间
-    'namespace'    => 'KafkaApp',
+    'namespace'         => 'KafkaApp',
 
     // 配置文件
-    'configs'    => [
+    'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
@@ -26,25 +27,26 @@ return [
     // ],
 
     // 组件命名空间
-    'components'    => [
+    'components'        => [
         'Swoole'    => 'Imi\Swoole',
         'Workerman' => 'Imi\Workerman',
         'Kafka'     => 'Imi\Kafka',
     ],
 
     // 主服务器配置
-    'mainServer'    => [
+    'mainServer'        => [
         'namespace'    => 'KafkaApp\ApiServer',
         'type'         => \Imi\Swoole\Server\Type::HTTP,
         'host'         => '127.0.0.1',
         'port'         => 8080,
         'configs'      => [
             'worker_num'        => 1,
+            'max_wait_time'     => 30,
         ],
     ],
 
     // Workerman 服务器配置
-    'workermanServer' => [
+    'workermanServer'   => [
         'http' => [
             'namespace'    => 'KafkaApp\ApiServer',
             'type'         => \Imi\Workerman\Server\Type::HTTP,
@@ -55,14 +57,20 @@ return [
         ],
     ],
 
+    'workerman'       => [
+        'worker' => [
+            'stopTimeout' => 30,
+        ],
+    ],
+
     // 子服务器（端口监听）配置
     'subServers'        => [
     ],
 
     // 连接池配置
-    'pools'    => Imi::checkAppType('swoole') ? [
+    'pools'             => Imi::checkAppType('swoole') ? [
         'redis'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -76,7 +84,7 @@ return [
             ],
         ],
         'kafka'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Kafka\Pool\KafkaCoroutinePool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -91,7 +99,7 @@ return [
     ] : [],
 
     // redis 配置
-    'redis' => [
+    'redis'             => [
         // 数默认连接池名
         'defaultPool'   => 'redis',
         'connections'   => [
@@ -102,7 +110,7 @@ return [
             ],
         ],
     ],
-    'kafka' => [
+    'kafka'             => [
         'connections' => [
             'kafka'    => [
                 'bootstrapServers' => KAFKA_BOOTSTRAP_SERVERS,
@@ -111,7 +119,7 @@ return [
         ],
     ],
     // 日志配置
-    'logger' => [
+    'logger'            => [
         'channels' => [
             'imi' => [
                 'handlers' => [

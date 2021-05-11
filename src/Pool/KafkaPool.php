@@ -126,7 +126,7 @@ class KafkaPool
 
     public static function createConsumerConfig(array $config = []): ConsumerConfig
     {
-        $clientId = getmypid() . '-' . uniqid('', true);
+        $clientId = getmypid() . '-' . bin2hex(random_bytes(8));
         if (!isset($config['clientId']))
         {
             $config['clientId'] = $clientId;
@@ -140,22 +140,38 @@ class KafkaPool
             $config['maxWait'] = 10;
         }
 
-        return new ConsumerConfig($config);
+        $consumerConfig = new ConsumerConfig();
+        foreach ($config as $k => $v)
+        {
+            $methodName = 'set' . ucfirst($k);
+            if (method_exists(ConsumerConfig::class, $methodName))
+            {
+                $consumerConfig->{$methodName}($v);
+            }
+        }
+
+        return $consumerConfig;
     }
 
     public static function createProducerConfig(array $config = []): ProducerConfig
     {
-        $clientId = getmypid() . '-' . uniqid('', true);
+        $clientId = getmypid() . '-' . bin2hex(random_bytes(8));
         if (!isset($config['clientId']))
         {
             $config['clientId'] = $clientId;
         }
-        if (!isset($config['groupInstanceId']))
+
+        $producerConfig = new ProducerConfig();
+        foreach ($config as $k => $v)
         {
-            $config['groupInstanceId'] = $clientId;
+            $methodName = 'set' . ucfirst($k);
+            if (method_exists(ProducerConfig::class, $methodName))
+            {
+                $producerConfig->{$methodName}($v);
+            }
         }
 
-        return new ProducerConfig($config);
+        return $producerConfig;
     }
 
     /**
