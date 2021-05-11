@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Kafka\Pool;
 
 use Imi\Pool\BasePoolResource;
@@ -12,10 +14,8 @@ class KafkaResource extends BasePoolResource
 {
     /**
      * Kafka 生产者.
-     *
-     * @var Producer
      */
-    private $connection;
+    private Producer $connection;
 
     public function __construct(\Imi\Pool\Interfaces\IPool $pool, Producer $connection)
     {
@@ -25,47 +25,37 @@ class KafkaResource extends BasePoolResource
 
     /**
      * 打开
-     *
-     * @return bool
      */
-    public function open()
+    public function open(): bool
     {
         return true;
     }
 
     /**
      * 关闭.
-     *
-     * @return void
      */
-    public function close()
+    public function close(): void
     {
         $this->connection->close();
     }
 
     /**
      * 获取对象实例.
-     *
-     * @return Producer
      */
-    public function getInstance()
+    public function getInstance(): Producer
     {
         return $this->connection;
     }
 
     /**
      * 重置资源，当资源被使用后重置一些默认的设置.
-     *
-     * @return void
      */
-    public function reset()
+    public function reset(): void
     {
     }
 
     /**
      * 检查资源是否可用.
-     *
-     * @return bool
      */
     public function checkState(): bool
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Kafka\Queue\Contract;
 
 use Imi\Queue\Contract\IMessage;
@@ -9,8 +11,5 @@ interface IKafkaPopMessage extends IMessage
 {
     public function getConsumeMessage(): ConsumeMessage;
 
-    /**
-     * @return void
-     */
-    public function setConsumeMessage(ConsumeMessage $consumeMessage);
+    public function setConsumeMessage(ConsumeMessage $consumeMessage): void;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Kafka\Queue;
 
 use Imi\Bean\Annotation\Bean;
@@ -26,29 +28,23 @@ class KafkaQueueDriver implements IQueueDriver
 
     /**
      * Kafka 连接池名称.
-     *
-     * @var string
      */
-    protected $poolName;
+    protected ?string $poolName;
 
     /**
      * 队列名称.
-     *
-     * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * 分组ID.
-     *
-     * @var string|null
      */
-    public $groupId = null;
+    public ?string $groupId = null;
 
     /**
      * @var Consumer[]
      */
-    private $consumers;
+    private array $consumers;
 
     public function __construct(string $name, array $config = [])
     {
@@ -58,8 +54,6 @@ class KafkaQueueDriver implements IQueueDriver
 
     /**
      * 获取队列名称.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -68,12 +62,6 @@ class KafkaQueueDriver implements IQueueDriver
 
     /**
      * 推送消息到队列，返回消息ID.
-     *
-     * @param \Imi\Queue\Contract\IMessage $message
-     * @param float                        $delay
-     * @param array                        $options
-     *
-     * @return string
      */
     public function push(IMessage $message, float $delay = 0, array $options = []): string
     {
@@ -96,10 +84,6 @@ class KafkaQueueDriver implements IQueueDriver
 
     /**
      * 从队列弹出一个消息.
-     *
-     * @param float $timeout
-     *
-     * @return \Imi\Queue\Contract\IMessage|null
      */
     public function pop(float $timeout = 0): ?IMessage
     {
@@ -118,10 +102,6 @@ class KafkaQueueDriver implements IQueueDriver
 
     /**
      * 删除一个消息.
-     *
-     * @param \Imi\Queue\Contract\IMessage $message
-     *
-     * @return bool
      */
     public function delete(IMessage $message): bool
     {
@@ -132,22 +112,16 @@ class KafkaQueueDriver implements IQueueDriver
      * 清空队列.
      *
      * @param int|int[]|null $queueType 清空哪个队列，默认为全部
-     *
-     * @return void
      */
-    public function clear($queueType = null)
+    public function clear($queueType = null): void
     {
         throw new \RuntimeException('Unsupport clear queue in KafkaQueueDriver');
     }
 
     /**
      * 将消息标记为成功
-     *
-     * @param \Imi\Queue\Contract\IMessage $message
-     *
-     * @return void
      */
-    public function success(IMessage $message)
+    public function success(IMessage $message): int
     {
         if (!$message instanceof IKafkaPopMessage)
         {
@@ -155,24 +129,20 @@ class KafkaQueueDriver implements IQueueDriver
         }
         $consumer = $this->getConsumer($this->name);
         $consumer->ack($message->getConsumeMessage());
+
+        return 1;
     }
 
     /**
      * 将消息标记为失败.
-     *
-     * @param \Imi\Queue\Contract\IMessage $message
-     * @param bool                         $requeue
-     *
-     * @return void
      */
-    public function fail(IMessage $message, bool $requeue = false)
+    public function fail(IMessage $message, bool $requeue = false): int
     {
+        return 0;
     }
 
     /**
      * 获取队列状态
-     *
-     * @return \Imi\Queue\Model\QueueStatus
      */
     public function status(): QueueStatus
     {
@@ -183,8 +153,6 @@ class KafkaQueueDriver implements IQueueDriver
      * 将失败消息恢复到队列.
      *
      * 返回恢复数量
-     *
-     * @return int
      */
     public function restoreFailMessages(): int
     {
@@ -195,8 +163,6 @@ class KafkaQueueDriver implements IQueueDriver
      * 将超时消息恢复到队列.
      *
      * 返回恢复数量
-     *
-     * @return int
      */
     public function restoreTimeoutMessages(): int
     {

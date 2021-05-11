@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Kafka\Pool;
 
 use Imi\App;
@@ -64,10 +66,8 @@ class KafkaPool
 
     /**
      * 获取默认池子名称.
-     *
-     * @return string
      */
-    public static function getDefaultPoolName()
+    public static function getDefaultPoolName(): string
     {
         return App::getBean('Kafka')->getDefaultPoolName();
     }
@@ -109,10 +109,7 @@ class KafkaPool
     /**
      * 使用连接池配置创建消费者.
      *
-     * @param string|null       $poolName
      * @param string|array|null $topic
-     *
-     * @return Consumer
      */
     public static function createConsumer(?string $poolName = null, $topic = null, array $config = []): Consumer
     {

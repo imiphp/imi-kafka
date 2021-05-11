@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Kafka\Test\Kafka;
 
 use Yurun\Util\HttpRequest;
@@ -20,7 +22,7 @@ class KafkaMQTest extends BaseTest
         ], $response->json(true));
     }
 
-    public function testConsum(): void
+    public function testConsume(): void
     {
         $http = new HttpRequest();
         $excepted = [

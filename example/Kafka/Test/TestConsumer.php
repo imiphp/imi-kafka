@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KafkaApp\Kafka\Test;
 
 use Imi\Bean\Annotation\Bean;
@@ -16,10 +18,8 @@ class TestConsumer extends BaseConsumer
 {
     /**
      * 消费任务
-     *
-     * @return mixed
      */
-    protected function consume(ConsumeMessage $message)
+    protected function consume(ConsumeMessage $message): void
     {
         $data = json_decode($message->getValue(), true);
         var_dump(__CLASS__, $message->getValue());
