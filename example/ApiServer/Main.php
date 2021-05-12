@@ -1,6 +1,6 @@
 <?php
 
-namespace ImiApp\ApiServer;
+namespace KafkaApp\ApiServer;
 
 use Imi\Main\BaseMain;
 

@@ -8,27 +8,27 @@
         "longlang/phpkafka": "^1.1"
     },
     "require-dev": {
-        "yurunsoft/imi": "dev-dev",
         "yurunsoft/yurun-http": "^4.0.0",
         "yurunsoft/ide-helper": "~1.0",
-        "swoole/ide-helper": "^4.6",
-        "phpunit/phpunit": ">=7",
-        "friendsofphp/php-cs-fixer": "2.18.3",
-        "phpstan/phpstan": "0.12.82"
+        "swoole/ide-helper": "^4.6"
     },
     "autoload": {
-        "psr-4" : {
-            "Imi\\Kafka\\" : "src/"
+        "psr-4": {
+            "Imi\\Kafka\\": "src/"
         }
     },
     "autoload-dev": {
-        "psr-4" : {
-            "ImiApp\\" : "example/",
-            "Imi\\Kafka\\Test\\": "tests/"
+        "psr-4": {
+            "KafkaApp\\": "example/",
+            "Imi\\Kafka\\Test\\": "tests/",
+            "Imi\\Kafka\\Dev\\": "dev/"
         }
     },
     "scripts": {
-        "test": "./tests/phpunit -c ./tests/phpunit.xml"
+        "pre-install-cmd": "Imi\\Kafka\\Dev\\Dev::preUpdate",
+        "pre-update-cmd": "Imi\\Kafka\\Dev\\Dev::preUpdate",
+        "post-install-cmd": "Imi\\Kafka\\Dev\\Dev::postUpdate",
+        "post-update-cmd": "Imi\\Kafka\\Dev\\Dev::postUpdate"
     },
     "extra": {
         "ide-helper": {
