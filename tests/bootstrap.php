@@ -87,7 +87,7 @@ startServer();
     App::initWorker();
     $param->stopPropagation();
 }, 1);
-App::run('ImiApp');
+App::run('KafkaApp');
 
 Coroutine::defer(function () {
     Event::trigger('IMI.MAIN_SERVER.WORKER.EXIT', [], null, WorkerExitEventParam::class);

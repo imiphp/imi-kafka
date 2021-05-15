@@ -4,7 +4,7 @@ defined('KAFKA_BOOTSTRAP_SERVERS') || define('KAFKA_BOOTSTRAP_SERVERS', imiGetEn
 
 return [
     // 项目根命名空间
-    'namespace'    => 'ImiApp',
+    'namespace'    => 'KafkaApp',
 
     // 配置文件
     'configs'    => [
@@ -13,11 +13,11 @@ return [
 
     // 扫描目录
     'beanScan'    => [
-        'ImiApp\Listener',
-        'ImiApp\Task',
-        'ImiApp\Consumer',
-        'ImiApp\Kafka',
-        'ImiApp\Process',
+        'KafkaApp\Listener',
+        'KafkaApp\Task',
+        'KafkaApp\Consumer',
+        'KafkaApp\Kafka',
+        'KafkaApp\Process',
     ],
 
     // 组件命名空间
@@ -27,7 +27,7 @@ return [
 
     // 主服务器配置
     'mainServer'    => [
-        'namespace'    => 'ImiApp\ApiServer',
+        'namespace'    => 'KafkaApp\ApiServer',
         'type'         => Imi\Server\Type::HTTP,
         'host'         => '127.0.0.1',
         'port'         => 8080,
