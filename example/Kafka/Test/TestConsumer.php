@@ -1,6 +1,6 @@
 <?php
 
-namespace ImiApp\Kafka\Test;
+namespace KafkaApp\Kafka\Test;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Kafka\Annotation\Consumer;

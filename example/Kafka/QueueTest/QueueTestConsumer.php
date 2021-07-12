@@ -1,6 +1,6 @@
 <?php
 
-namespace ImiApp\Kafka\QueueTest;
+namespace KafkaApp\Kafka\QueueTest;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Queue\Contract\IMessage;
@@ -23,7 +23,6 @@ class QueueTestConsumer extends BaseQueueConsumer
      */
     protected function consume(IMessage $message, IQueueDriver $queue)
     {
-        var_dump(__CLASS__, $message->getMessage());
         $queueTestMessage = QueueTestMessage::fromMessage($message->getMessage());
         Redis::set('imi-kafka:consume:QueueTest:' . $queueTestMessage->getMemberId(), $message->getMessage());
 

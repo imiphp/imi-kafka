@@ -5,7 +5,7 @@ return [
     ],
     // bean扫描目录
     'beanScan'    => [
-        'ImiApp\ApiServer\Controller',
+        'KafkaApp\ApiServer\Controller',
     ],
     'beans'    => [
         'HttpDispatcher'    => [

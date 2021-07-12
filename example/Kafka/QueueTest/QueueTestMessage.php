@@ -1,6 +1,6 @@
 <?php
 
-namespace ImiApp\Kafka\QueueTest;
+namespace KafkaApp\Kafka\QueueTest;
 
 use Imi\Util\Traits\TNotRequiredDataToProperty;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace ImiApp\ApiServer\Controller;
+namespace KafkaApp\ApiServer\Controller;
 
 use Imi\Controller\HttpController;
 use Imi\Kafka\Pool\KafkaPool;
@@ -10,7 +10,7 @@ use Imi\Redis\Redis;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\Controller;
 use Imi\Server\Route\Annotation\Route;
-use ImiApp\Kafka\QueueTest\QueueTestMessage;
+use KafkaApp\Kafka\QueueTest\QueueTestMessage;
 
 /**
  * @Controller("/")

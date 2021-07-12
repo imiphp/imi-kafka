@@ -1,6 +1,6 @@
 <?php
 
-namespace ImiApp\Process;
+namespace KafkaApp\Process;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
@@ -16,7 +16,7 @@ class TestProcess extends BaseProcess
     /**
      * @Inject("TestConsumer")
      *
-     * @var \ImiApp\Kafka\Test\TestConsumer
+     * @var \KafkaApp\Kafka\Test\TestConsumer
      */
     protected $testConsumer;
 

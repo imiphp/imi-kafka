@@ -1,1 +1,0 @@
-C:37:"PHPUnit\Runner\DefaultTestResultCache":278:{a:2:{s:7:"defects";a:2:{s:45:"Imi\Kafka\Test\Kafka\KafkaMQTest::testPublish";i:3;s:44:"Imi\Kafka\Test\Kafka\KafkaMQTest::testConsum";i:3;}s:5:"times";a:2:{s:45:"Imi\Kafka\Test\Kafka\KafkaMQTest::testPublish";d:0.092;s:44:"Imi\Kafka\Test\Kafka\KafkaMQTest::testConsum";d:1.008;}}}
